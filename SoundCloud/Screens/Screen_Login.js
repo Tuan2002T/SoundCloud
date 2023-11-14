@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,35 @@ export default function Screen_Login({ navigation }) {
   const icon1 = <Ionicons name="ios-eye" size={24} color="black" />
   const icon2 = <Ionicons name="ios-eye-off" size={24} color="black" />
   const [currentIcon, setCurrentIcon] = useState(icon1)
+
+
+  const [data, setdata] = useState([]);
+  useEffect(() => {
+    fetch('https://6544afd55a0b4b04436cbf81.mockapi.io/soundcloud/account')
+      .then(response => response.json())
+      .then(data => {
+        setdata(data);
+      })
+  }, []);
+
+  console.log(data);
+
+  
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const checkAccount = () => {
+    data.map(item => {
+      if (item.username === username && item.password === password) {
+        // return console.log('ok');
+        return navigation.navigate('Home')
+        
+      }
+      else {
+        return console.log('no');
+      }
+    })
+  }
+
 
   return (
     <View style={styles.container}>
@@ -32,7 +61,7 @@ export default function Screen_Login({ navigation }) {
             borderRadius: 100,
             marginRight: 20
           }}>
-          <AntDesign name="arrowleft" size={26 } color="black" />
+          <AntDesign name="arrowleft" size={26} color="black" />
         </Pressable>
         <Text style={{
           fontSize: 20,
@@ -50,7 +79,7 @@ export default function Screen_Login({ navigation }) {
         marginBottom: 15
       }}>
         {/* <AntDesign name="google" size={24} color="black" /> */}
-        <Image source={require('../assets/google.png')} style={{width:25, height:25}} />
+        <Image source={require('../assets/google.png')} style={{ width: 25, height: 25 }} />
         <Text style={{
           fontSize: 12,
           fontWeight: 'bold',
@@ -96,11 +125,14 @@ export default function Screen_Login({ navigation }) {
 
 
       <TextInput
+        value={username}
+        onChangeText={username => setUsername(username)}
+
         style={{
           backgroundColor: '#FFF',
           width: '90%',
           marginTop: 20,
-          height:50
+          height: 50
         }}
         label="Email"
         underlineColor='#cfcfcf'
@@ -112,12 +144,14 @@ export default function Screen_Login({ navigation }) {
       }}>
 
         <TextInput
+        value={password}
+        onChangeText={password => setPassword(password)}
           style={{
             backgroundColor: '#FFF',
             width: '100%',
             fontSize: 13,
             color: 'red',
-            height:50
+            height: 50
           }}
           label="Password (min. 8 characters)"
           underlineColor='none'
@@ -138,18 +172,18 @@ export default function Screen_Login({ navigation }) {
         </Pressable>
 
       </View>
-      <Pressable 
-        onPress={()=>navigation.navigate('Home')}
-      style={{
-        width: '90%',
-        height: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#000',
-        borderRadius: 5,
-        marginTop: 40
-      }}>
+      <Pressable
+        onPress={() => checkAccount()}
+        style={{
+          width: '90%',
+          height: 50,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#000',
+          borderRadius: 5,
+          marginTop: 40
+        }}>
         <Text style={{
           fontSize: 12,
           fontWeight: 'bold',
@@ -157,7 +191,7 @@ export default function Screen_Login({ navigation }) {
           color: '#fff'
         }}>Continue</Text>
       </Pressable>
-        <Pressable style={{width:'90%'}}><Text style={{fontSize: 10, paddingTop:20, color:'#01389D'}}>Forgot your pasword?</Text></Pressable>
+      <Pressable style={{ width: '90%' }}><Text style={{ fontSize: 10, paddingTop: 20, color: '#01389D' }}>Forgot your pasword?</Text></Pressable>
     </View>
   );
 }
