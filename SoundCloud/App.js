@@ -10,6 +10,7 @@ import Screen_Home from './Screens/Screen_Home';
 import Screen_Search from './Screens/Screen_Search';
 import Screen_Library from './Screens/Screen_LIbrary';
 import Screen_Feed from './Screens/Screen_Feed';
+import Screen_PlayMusic from './Screens/Screen_PlayMusic';
 
 
 const Stack = createStackNavigator();
@@ -18,6 +19,9 @@ const Tab = createBottomTabNavigator();
 
 const TabScreens = () => (
   <Tab.Navigator 
+  tabBarOptions={{
+    activeTintColor: 'black', // Màu chữ khi được chọn
+  }}
     initialRouteName={Screen_SignUp}
     screenOptions={({route})=>({
       tabBarIcon: ({focused, color, size})=>{
@@ -33,7 +37,6 @@ const TabScreens = () => (
         } else if(rn === 'Libarary'){
           iconName = focused ? <Image style={{width:25, height:25}} source={require('./assets/library_focus.png')} /> : <Image style={{width:25, height:25}} source={require('./assets/library.png')} />;
         }
-        console.log(iconName);
         return iconName;
       }
     })}
@@ -64,7 +67,7 @@ const TabScreens = () => (
     <Tab.Screen name="Libarary" options={{ headerShown: false
     
     }} component={Screen_Library} />
-
+  
   </Tab.Navigator>
 );
 
@@ -73,9 +76,11 @@ function MyStack() {
   return (
     <Stack.Navigator>
       {/* <Stack.Screen name="Start" component={Screen_Start} options={{headerShown:false}} /> */}
-      <Stack.Screen name="Login" component={Screen_Login} options={{headerShown:false}} />
+        {/* <Stack.Screen name="Login" component={Screen_Login} options={{headerShown:false}} /> */}
       {/* <Stack.Screen name="SignUp" component={Screen_SignUp} options={{headerShown:false}} /> */}
       <Stack.Screen name="Home" component={TabScreens} options={{headerShown:false}} />
+      <Stack.Screen name="PlayMusic" component={Screen_PlayMusic} options={{headerShown:false}} />
+
     </Stack.Navigator>
   );
 }
