@@ -11,10 +11,27 @@ import Screen_Search from './Screens/Screen_Search';
 import Screen_Library from './Screens/Screen_LIbrary';
 import Screen_Feed from './Screens/Screen_Feed';
 import Screen_PlayMusic from './Screens/Screen_PlayMusic';
+import Screen_Track from './Screens/Screen_Track';
 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+
+const TabStack = createStackNavigator();
+
+function TabScreens1() {
+  return (
+    <TabStack.Navigator>
+      <TabStack.Screen name="Screen1" component={Screen_Home} options={{ headerShown: false
+     
+    }} />
+      <TabStack.Screen name="Track" component={Screen_Track} options={{ headerShown: false
+     
+    }} /> 
+    </TabStack.Navigator>
+  )
+}
 
 
 const TabScreens = () => (
@@ -41,23 +58,9 @@ const TabScreens = () => (
       }
     })}
   >
-    {/* <Tab.Screen name="Home" options={{tabBarIcon:()=>
-      <GoHomeFill size={30}/>
-    }} component={Screen_SignUp} />
-    <Tab.Screen name="Feed" options={{tabBarIcon:()=>
-      <BsCollection size={25}/>
-    }} component={Screen_SignUp} />
-    <Tab.Screen name="Search" options={{tabBarIcon:()=>
-      <BsSearch size={25}/>
-    }} component={Screen_SignUp} />
-    <Tab.Screen name="Library" options={{tabBarIcon:()=>
-      <VscLibrary size={27}/>
-    }} component={Screen_SignUp} /> */}
-
-
     <Tab.Screen name="Home" options={{ headerShown: false
      
-    }} component={Screen_Home} />
+    }} component={TabScreens1} />
     <Tab.Screen name="Feed" options={{ headerShown: false
      
     }} component={Screen_Search} />
@@ -66,7 +69,7 @@ const TabScreens = () => (
     }} component={Screen_Feed} />
     <Tab.Screen name="Libarary" options={{ headerShown: false
     
-    }} component={Screen_Library} />
+    }}  component={Screen_Library} />
   
   </Tab.Navigator>
 );
@@ -76,11 +79,11 @@ function MyStack() {
   return (
     <Stack.Navigator>
       {/* <Stack.Screen name="Start" component={Screen_Start} options={{headerShown:false}} /> */}
-        {/* <Stack.Screen name="Login" component={Screen_Login} options={{headerShown:false}} /> */}
+      {/* <Stack.Screen name="Login" component={Screen_Login} options={{headerShown:false}} /> */}
       {/* <Stack.Screen name="SignUp" component={Screen_SignUp} options={{headerShown:false}} /> */}
       <Stack.Screen name="Home" component={TabScreens} options={{headerShown:false}} />
       <Stack.Screen name="PlayMusic" component={Screen_PlayMusic} options={{headerShown:false}} />
-
+      <Stack.Screen name="Track" component={Screen_Track} options={{headerShown:false}} />
     </Stack.Navigator>
   );
 }
