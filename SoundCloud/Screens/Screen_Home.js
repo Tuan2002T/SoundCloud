@@ -47,7 +47,7 @@ export default function Screen_Home({ navigation, route }) {
               data={data}
               renderItem={({ item }) => (
                 <View>
-                  <Pressable onPress={() => navigation.navigate("Track", {item})}>
+                  <Pressable onPress={() => navigation.navigate("Track", { item })}>
                     <View style={{
                       width: 100,
                       height: 100,
@@ -274,6 +274,7 @@ export default function Screen_Home({ navigation, route }) {
       </View>
       <View style={{ backgroundColor: 'black', height: '6%', width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }} >
         <Foundation name="play" size={26} color="white" style={{ paddingLeft: 20 }} />
+
         <View style={{ flexDirection: 'row' }}>
           <Feather name="user-plus" size={23} color="white" style={{ paddingRight: 20 }} />
           <AntDesign name="hearto" size={21} color="white" style={{ paddingRight: 20 }} />
