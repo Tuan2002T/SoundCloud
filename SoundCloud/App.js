@@ -63,10 +63,10 @@ const TabScreens = () => (
     }} component={TabScreens1} />
     <Tab.Screen name="Feed" options={{ headerShown: false
      
-    }} component={Screen_Search} />
+    }} component={Screen_Feed} />
     <Tab.Screen name="Search" options={{ headerShown: false
       
-    }} component={Screen_Feed} />
+    }} component={Screen_Search} />
     <Tab.Screen name="Libarary" options={{ headerShown: false
     
     }}  component={Screen_Library} />
