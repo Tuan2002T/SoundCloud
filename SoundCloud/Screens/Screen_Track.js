@@ -1,27 +1,49 @@
 import { Linking, Pressable, StyleSheet, Text, View, ScrollView, FlatList, Image } from 'react-native';
 
 import { TextInput } from 'react-native-paper';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Ionicons, Foundation, Entypo, Feather, AntDesign, FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import { ContextMusic } from '../Context/ContextMusic';
 
 
 export default function Screen_Track({ navigation, route }) {
-  const [data, setData] = useState([]);
-  const [singer, setSinger] = useState('');
   useEffect(() => {
-    setSinger(route.params.item.singer);
-    fetch('https://6544afd55a0b4b04436cbf81.mockapi.io/soundcloud/music/' + route.params.item.id)
-      .then(response => response.json())
-      .then(data => {
-        setSinger(data.singer);
-      })
-    fetch('https://6544afd55a0b4b04436cbf81.mockapi.io/soundcloud/music/')
-      .then(response => response.json())
-      .then(data => {
-        setData(data);
-      })
+    console.log(currentIcon.props.name);
   }, []);
-  console.log(singer);
+
+
+  // const [data, setData] = useState([]);
+  const { data, loadMusic, sound, pauseTrack, playTrack, 
+          stopTrack, musicLoadPlay, dataPlay, SetIconPlay ,
+          SetIconLove, currentIconLove,SetIconAdd, currentIconAdd,
+          SetIcon,currentIcon, playAndSeek,lastPosition,soundTest,
+        SetIconAdd1,currentIconAdd1, currentIconPlay,SetIconPlayTrack } = useContext(ContextMusic);
+
+  const filteredData = data.filter(item => item.singer.includes(route.params.item.singer))
+  const [musicName, setMusicName] = useState([]);
+  // useEffect(() => {
+  //   stopTrack();
+  //   setMusicName(dataPlay)
+  // }, [dataPlay]);
+// console.log(lastPosition);
+  useEffect(() => {
+       loadMusic(musicName.url, lastPosition)
+       playTrack();
+  }, [musicName]);
+
+  const [data1, setData1] = useState([]);
+  useEffect(() => {
+    setData1(route.params.item);
+  }, [route.params.item]);
+
+
+  const musicLoadPlayTest = (id) => {
+    fetch('https://655e2b5a9f1e1093c59aa3d1.mockapi.io/api/music/'+id)
+        .then(response => response.json())
+        .then(data => {
+            setMusicName(data);
+        })
+}
   return (
     <View style={styles.container}>
 
@@ -49,8 +71,8 @@ export default function Screen_Track({ navigation, route }) {
       <View
         style={{ width: '100%', height: '81%' }}
       >
-        <ScrollView 
-            showsVerticalScrollIndicator={false}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
         >
           <View style={{ flexDirection: 'row' }}>
             <Pressable>
@@ -110,16 +132,16 @@ export default function Screen_Track({ navigation, route }) {
             </View>
           </View>
 
-          <View style={{paddingLeft:10, flexDirection:'row', justifyContent:'space-between'}}>
-            <View style = {{flexDirection:"row", alignItems:'center'}}>
-              <AntDesign name="hearto" size={21} color="gray" style={{marginRight:7}} />
+          <View style={{ paddingLeft: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: "row", alignItems: 'center' }}>
+              <AntDesign name="hearto" size={21} color="gray" style={{ marginRight: 7 }} />
               <Text>0</Text>
-              <Entypo style={{paddingLeft:20}} name="dots-three-vertical" size={18} color="gray" />
+              <Entypo style={{ paddingLeft: 20 }} name="dots-three-vertical" size={18} color="gray" />
             </View>
-            <View  style = {{flexDirection:"row", alignItems:'center'}}>
-                
-                <FontAwesome name="random" size={20} color="gray" />
-                <Ionicons name="ios-play-circle" size={60} color="black" />
+            <View style={{ flexDirection: "row", alignItems: 'center' }}>
+
+              <FontAwesome name="random" size={20} color="gray" />
+              <Ionicons name="ios-play-circle" size={60} color="black" />
             </View>
           </View>
 
@@ -127,16 +149,15 @@ export default function Screen_Track({ navigation, route }) {
             <FlatList
               showsHorizontalScrollIndicator={false}
               style={{ width: '100%' }}
-              data={data}
+              data={filteredData}
               renderItem={({ item }) => (
                 <View>
                   <Pressable
-                    style={{ flexDirection: 'row', padding: 10, width: '100%', alignItems: 'center', paddingLeft:10 }}
-                    onPress={() => navigation.navigate("PlayMusic", { item })}>
+                    style={{ flexDirection: 'row', padding: 10, width: '100%', alignItems: 'center', paddingLeft: 10 }}
+                    onPress={() => { musicLoadPlay(item.id) ,musicLoadPlayTest(item.id),stopTrack()}}>
                     <View style={{}}>
                       <Image style={{ width: 70, height: 70, resizeMode: 'contain', borderRadius: 3 }}
                         source={
-                          // require('./assets/icon.png')
                           { uri: item.img }
                         } />
                     </View>
@@ -177,13 +198,43 @@ export default function Screen_Track({ navigation, route }) {
         </ScrollView>
 
       </View>
-      <View style={{ backgroundColor: 'black', height: '6%', width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }} >
-        <Foundation name="play" size={26} color="white" style={{ paddingLeft: 20 }} />
-        <View style={{ flexDirection: 'row' }}>
-          <Feather name="user-plus" size={23} color="white" style={{ paddingRight: 20 }} />
-          <AntDesign name="hearto" size={21} color="white" style={{ paddingRight: 20 }} />
+      <Pressable
+        onPress={() => navigation.navigate('PlayMusic')}
+        style={{ backgroundColor: 'black', height: '6%', width: '100%', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }} >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          {/* <Foundation name="play" size={26} color="white" style={{ paddingHorizontal: 20 }} /> */}
+          <Pressable
+            onPress={() => {
+              SetIcon();
+            }}
+            style={{ position: 'relative' }}>
+            {currentIcon}
+          </Pressable>
+          <View style={{ width: '70%' }}>
+            <Text numberOfLines={1} style={{ color: 'white', fontSize: 13, fontWeight: '700' }}>{dataPlay.musicname} - {dataPlay.musicproducer}</Text>
+            <Text style={{ color: 'white', fontSize: 13, }}> {dataPlay.singer}</Text>
+          </View>
         </View>
-      </View>
+
+        <View style={{ flexDirection: 'row' }}>
+          {/* <Feather name="user-plus" size={23} color="white" style={{ paddingRight: 20 }} /> */}
+
+          <Pressable
+            onPress={() => {
+              SetIconAdd()
+            }}
+            style={{ position: 'relative' }}>
+            {currentIconAdd}
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              SetIconLove();  
+            }}
+            style={{ position: 'relative' }}>
+            {currentIconLove}
+          </Pressable>
+        </View>
+      </Pressable>
     </View>
   );
 }
